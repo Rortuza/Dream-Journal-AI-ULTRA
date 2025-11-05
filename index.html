@@ -213,40 +213,7 @@
 
   <!-- Load the app as an ES module so all click handlers attach -->
   <script type="module" src="app.js?v=101"></script>
-  <script>
-(function(){
-  function $(id){ return document.getElementById(id); }
-  const views = {
-    landing: $('view-landing'),
-    home: $('view-home'),
-    new: $('view-new'),
-    search: $('view-search'),
-    insights: $('view-insights'),
-    settings: $('view-settings'),
-    about: $('view-about')
-  };
-  function show(which){
-    Object.values(views).forEach(v => v && v.classList.add('hidden'));
-    if(views[which]) views[which].classList.remove('hidden');
-    location.hash = '#/' + which;
-  }
-  function route(){
-    const h = location.hash.replace(/^#\//,'');
-    if(views[h]) show(h); else show('landing');
-  }
-  const map = {
-    'tab-landing':'landing','tab-home':'home','tab-new':'new','tab-search':'search',
-    'tab-insights':'insights','tab-settings':'settings','tab-about':'about',
-    'cta-new':'new','cta-entries':'home','title-link':'landing'
-  };
-  Object.keys(map).forEach(id=>{
-    const el = $(id);
-    if(el) el.addEventListener('click', ()=> show(map[id]));
-  });
-  window.addEventListener('hashchange', route);
-  route();
-})();
-</script>
+
 
 </body>
 </html>
