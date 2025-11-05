@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dream Journal AI Pro</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png">
+  <meta name="theme-color" content="#111111">
+  <link rel="stylesheet" href="style.css?v=100">
+</head>
+<body>
+  <a href="#main" class="skip">Skip to content</a>
+  <header>
+    <h1 id="title-link" class="title-link" aria-label="Go to Home">Dream Journal AI</h1>
+    <nav aria-label="Primary">
+      <button id="tab-landing">Home</button>
+      <button id="tab-home">Entries</button>
+      <button id="tab-new">New Entry</button>
+      <button id="tab-search">Search</button>
+      <button id="tab-insights">Insights</button>
+      <button id="tab-settings">Settings</button>
+      <button id="tab-about">About</button>
+      <button id="export">Export</button>
+      <button id="theme-toggle" title="Toggle theme">Theme</button>
+    </nav>
+
+    <div id="quote-bar" class="quote-bar" aria-live="polite">
+      <span id="quote"></span>
+    </div>
+
+    <form id="search-form" class="search" role="search" aria-label="Quick search">
+      <input id="q" class="input" placeholder="search text">
+      <input id="tag" class="input" placeholder="tag filter">
+      <button type="submit">Search</button>
+    </form>
+  </header>
+
+  <main id="main">
+    <!-- Landing / Home -->
+    <section id="view-landing" class="view">
+      <article class="hero card">
+        <h2>Welcome</h2>
+        <p class="muted">Capture dreams quickly, track patterns, and experiment with gentle habits. Everything lives on your device by default.</p>
+        <ul class="hero-points">
+          <li>Local-first with optional encryption</li>
+          <li>TF‑IDF search and topic clustering</li>
+          <li>Charts for trends and correlations</li>
+          <li>Offline PWA, import/export</li>
+        </ul>
+        <div class="hero-actions">
+          <button id="cta-new">Write a New Entry</button>
+          <button id="cta-entries" class="ghost">View Entries</button>
+        </div>
+      </article>
+    </section>
+
+    <!-- Entries -->
+    <section id="view-home" class="view hidden">
+      <div class="toolbar">
+        <span id="streak" class="badge" title="Consecutive days with entries">Streak: 0</span>
+        <span id="count" class="badge">0 entries</span>
+      </div>
+      <ul id="cards" class="cards"></ul>
+    </section>
+
+    <!-- New entry -->
+    <section id="view-new" class="view hidden">
+      <form id="new-form" class="form">
+        <div class="row">
+          <label>Title <input id="title" class="input" required></label>
+          <label>Tags <input id="tags" class="input" placeholder="falling, exam, chase"></label>
+        </div>
+        <label>Dream text <textarea id="text" class="textarea" rows="10" required></textarea></label>
+
+        <details class="templates">
+          <summary>Guided templates</summary>
+          <div class="grid2">
+            <button type="button" class="ghost tiny" data-tpl="story">Story scaffold</button>
+            <button type="button" class="ghost tiny" data-tpl="feelings">Feelings first</button>
+            <button type="button" class="ghost tiny" data-tpl="symbols">Symbols and places</button>
+            <button type="button" class="ghost tiny" data-tpl="lucid">Lucid log</button>
+          </div>
+        </details>
+
+        <div class="row">
+          <button type="button" id="mic" class="ghost" title="Voice to text">🎤 Dictate</button>
+          <span id="mic-status" class="muted" role="status"></span>
+        </div>
+
+        <fieldset>
+          <legend>Context</legend>
+          <div class="grid3">
+            <label>Screen min last hour <input type="number" id="screen" class="input" min="0" value="0"></label>
+            <label>Caffeine mg today <input type="number" id="caffeine" class="input" min="0" value="0"></label>
+            <label>Minutes since last meal <input type="number" id="meal" class="input" min="0" value="0"></label>
+            <label>Workout minutes <input type="number" id="workout" class="input" min="0" value="0"></label>
+            <label>Stress 1‑5 <input type="number" id="stress" class="input" min="1" max="5" value="3"></label>
+            <label><input type="checkbox" id="lucid"> Lucid</label>
+          </div>
+        </fieldset>
+
+        <button type="submit">Save</button>
+      </form>
+    </section>
+
+    <!-- Search / Cluster -->
+    <section id="view-search" class="view hidden">
+      <article class="card">
+        <h2>Deep Search</h2>
+        <div class="row">
+          <input id="adv-q" class="input" placeholder="query, supports fuzzy">
+          <button id="adv-run">Search</button>
+          <button id="cluster" class="ghost">Cluster Topics</button>
+        </div>
+        <div id="search-results"></div>
+        <div id="cluster-results" class="grid3"></div>
+      </article>
+    </section>
+
+    <!-- Insights -->
+    <section id="view-insights" class="view hidden">
+      <article class="card">
+        <h2>Insights</h2>
+        <canvas id="chart-ni" width="900" height="200" aria-label="Nightmare Index over time"></canvas>
+        <canvas id="chart-sent-ma" width="900" height="200" aria-label="Sentiment moving average"></canvas>
+        <canvas id="chart-scatter" width="900" height="220" aria-label="Screen time versus Nightmare Index scatter plot"></canvas>
+        <div id="insight-text" class="muted"></div>
+      </article>
+    </section>
+
+    <!-- Settings -->
+    <section id="view-settings" class="view hidden">
+      <article class="card">
+        <h2>Settings</h2>
+        <div class="grid2">
+          <label>Font size
+            <select id="font-size" class="input">
+              <option value="base">Base</option>
+              <option value="lg">Large</option>
+              <option value="xl">Extra Large</option>
+            </select>
+          </label>
+          <label><input type="checkbox" id="reduced"> Reduced motion</label>
+        </div>
+
+        <h3>Encryption</h3>
+        <p class="muted">Optional end‑to‑end encryption locks your entries with a password only you know. Lose it, lose the data.</p>
+        <div class="grid2">
+          <label>Set password <input id="enc-pass" class="input" type="password" placeholder="new password"></label>
+          <button id="enc-set">Enable / Rotate key</button>
+        </div>
+        <div class="grid2">
+          <button id="export-json" class="ghost">Export Encrypted JSON</button>
+          <input id="import-file" type="file" accept=".json" hidden>
+          <button id="import-json">Import Encrypted JSON</button>
+        </div>
+      </article>
+    </section>
+
+    <!-- About -->
+    <section id="view-about" class="view hidden">
+      <article class="card">
+        <h2>About Dream Journal AI</h2>
+        <p>
+          This is a local‑first dream tracker with light analysis. Entries live in your browser’s database. No servers are required. It estimates tone and a simple nightmare index, runs TF‑IDF search with fuzzy matching, and clusters entries into themes. Charts help you see trends and experiment with habits.
+        </p>
+        <p>
+          Optional encryption uses WebCrypto AES‑GCM. Import and export let you back up your encrypted archive. The app is a PWA, so it works offline and can be installed.
+        </p>
+        <p class="muted">
+          Credit Amy for the inspiration &lt;3
+        </p>
+      </article>
+    </section>
+
+    <!-- Detail dialog -->
+    <dialog id="detail">
+      <article>
+        <h3 id="d-title"></h3>
+        <p class="muted" id="d-dt"></p>
+        <p id="d-text"></p>
+        <p class="tags" id="d-tags"></p>
+        <hr>
+        <h4>Analysis</h4>
+        <ul>
+          <li>Sentiment: <span id="d-sent"></span></li>
+          <li>Primary emotion: <span id="d-emotion"></span></li>
+          <li>Nightmare index: <strong id="d-ni"></strong></li>
+        </ul>
+        <h4>Context</h4>
+        <ul>
+          <li>Screen last hour: <span id="d-screen"></span> min</li>
+          <li>Caffeine: <span id="d-caff"></span> mg</li>
+          <li>Minutes since last meal: <span id="d-meal"></span></li>
+          <li>Workout: <span id="d-work"></span> min</li>
+          <li>Stress: <span id="d-stress"></span> of 5</li>
+          <li>Lucid: <span id="d-lucid"></span></li>
+        </ul>
+        <h4>Coaching</h4>
+        <ul id="d-recs"></ul>
+        <menu>
+          <button id="close-detail">Close</button>
+        </menu>
+      </article>
+    </dialog>
+  </main>
+
+  <footer>
+    <p class="muted">Local only by default · Installable PWA · Open source</p>
+  </footer>
+
+  <script src="db.js?v=100"></script>
+  <script src="crypto.js?v=100"></script>
+  <script src="analysis.js?v=100"></script>
+  <script src="ui.js?v=100"></script>
+  <script src="app.js?v=100"></script>
+</body>
+</html>
