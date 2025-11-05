@@ -11,6 +11,7 @@
 </head>
 <body>
   <a href="#main" class="skip">Skip to content</a>
+
   <header>
     <h1 id="title-link" class="title-link" aria-label="Go to Home">Dream Journal AI</h1>
     <nav aria-label="Primary">
@@ -37,16 +38,16 @@
   </header>
 
   <main id="main">
-    <!-- Landing / Home -->
+    <!-- Landing -->
     <section id="view-landing" class="view">
       <article class="hero card">
         <h2>Welcome</h2>
         <p class="muted">Capture dreams quickly, track patterns, and experiment with gentle habits. Everything lives on your device by default.</p>
         <ul class="hero-points">
-          <li>Local-first with optional encryption</li>
-          <li>TF‑IDF search and topic clustering</li>
+          <li>Local first with optional encryption</li>
+          <li>TF IDF search and topic clustering</li>
           <li>Charts for trends and correlations</li>
-          <li>Offline PWA, import/export</li>
+          <li>Offline PWA, import and export</li>
         </ul>
         <div class="hero-actions">
           <button id="cta-new">Write a New Entry</button>
@@ -95,7 +96,7 @@
             <label>Caffeine mg today <input type="number" id="caffeine" class="input" min="0" value="0"></label>
             <label>Minutes since last meal <input type="number" id="meal" class="input" min="0" value="0"></label>
             <label>Workout minutes <input type="number" id="workout" class="input" min="0" value="0"></label>
-            <label>Stress 1‑5 <input type="number" id="stress" class="input" min="1" max="5" value="3"></label>
+            <label>Stress 1 to 5 <input type="number" id="stress" class="input" min="1" max="5" value="3"></label>
             <label><input type="checkbox" id="lucid"> Lucid</label>
           </div>
         </fieldset>
@@ -104,7 +105,7 @@
       </form>
     </section>
 
-    <!-- Search / Cluster -->
+    <!-- Search -->
     <section id="view-search" class="view hidden">
       <article class="card">
         <h2>Deep Search</h2>
@@ -145,10 +146,10 @@
         </div>
 
         <h3>Encryption</h3>
-        <p class="muted">Optional end‑to‑end encryption locks your entries with a password only you know. Lose it, lose the data.</p>
+        <p class="muted">Optional end to end encryption locks your entries with a password only you know. Lose it, lose the data.</p>
         <div class="grid2">
           <label>Set password <input id="enc-pass" class="input" type="password" placeholder="new password"></label>
-          <button id="enc-set">Enable / Rotate key</button>
+          <button id="enc-set">Enable or rotate key</button>
         </div>
         <div class="grid2">
           <button id="export-json" class="ghost">Export Encrypted JSON</button>
@@ -163,10 +164,10 @@
       <article class="card">
         <h2>About Dream Journal AI</h2>
         <p>
-          This is a local‑first dream tracker with light analysis. Entries live in your browser’s database. No servers are required. It estimates tone and a simple nightmare index, runs TF‑IDF search with fuzzy matching, and clusters entries into themes. Charts help you see trends and experiment with habits.
+          This is a local first dream tracker with light analysis. Entries live in your browser database. No servers are required. It estimates tone and a simple nightmare index, runs TF IDF search with fuzzy matching, and clusters entries into themes. Charts help you see trends and experiment with habits.
         </p>
         <p>
-          Optional encryption uses WebCrypto AES‑GCM. Import and export let you back up your encrypted archive. The app is a PWA, so it works offline and can be installed.
+          Optional encryption uses WebCrypto AES GCM. Import and export let you back up your encrypted archive. The app is a PWA, so it works offline and can be installed.
         </p>
         <p class="muted">
           Credit Amy for the inspiration &lt;3
@@ -207,13 +208,10 @@
   </main>
 
   <footer>
-    <p class="muted">Local only by default · Installable PWA · Open source</p>
+    <p class="muted">Local only by default, Installable PWA, Open source</p>
   </footer>
 
-  <script src="db.js?v=100"></script>
-  <script src="crypto.js?v=100"></script>
-  <script src="analysis.js?v=100"></script>
-  <script src="ui.js?v=100"></script>
-  <script src="app.js?v=100"></script>
+  <!-- Load the app as an ES module so all click handlers attach -->
+  <script type="module" src="app.js?v=100"></script>
 </body>
 </html>
